@@ -25,4 +25,3 @@ Backend             Python + FastAPI
 Data Processing     Pandas
 LLM                 OpenAI (gpt-3.5-turbo) or local model (if needed)
 Frontend            Simple HTML upload or Postman
->>>>>>> e58ccc1 (Initial commit)
