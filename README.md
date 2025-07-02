@@ -21,7 +21,7 @@ Returns the Report to User
 
 ### 4. Tech Stack
 Item                    Tool
-Backend             Python + FastAPI
+Backend             Python + Streamlit
 Data Processing     Pandas
-LLM                 OpenAI (gpt-3.5-turbo) or local model (if needed)
-Frontend            Simple HTML upload or Postman
+LLM                 deepseek r0528:free
+Frontend            streamlit
