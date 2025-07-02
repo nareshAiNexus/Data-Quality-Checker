@@ -5,7 +5,8 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_KEY = os.getenv("OPEN_ROUTER_API_KEY")
+# API_KEY = st.secrets["api"]["OPEN_ROUTER_API_KEY"]
+API_KEY = st.text_input("🔑 Enter your OpenRouter API Key", type="password")
 
 st.set_page_config(page_title="Data Quality Checker", layout="wide")
 st.title("📊 Data Quality Checker using LLM 🚀")
@@ -21,10 +22,10 @@ if uploaded_file:
     st.dataframe(df.head(), use_container_width=True)
 
     # Generate quality stats
-    total_rows = len(df)
+    total_rows =len(df)
     total_columns = len(df.columns)
     duplicate_rows = df.duplicated().sum()
-    missing_report = df.isnull().mean() * 100
+    missing_report = df.isnull().mean() *100
     dtypes = df.dtypes.astype(str)
 
     # Show metrics
@@ -52,82 +53,6 @@ Missing Values (%):
 Data Types:
 {dtypes.to_string()}
 """
-
-st.markdown("""
-<style>
-.big-font {
-    font-size: 32px !important;
-    font-weight: 700;
-    color: #4F46E5;
-}
-.centered {
-    text-align: center;
-}
-.badge {
-    background-color: #E0E7FF;
-    color: #3730A3;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-right: 10px;
-}
-.card {
-    background-color: #f9fafb;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.03);
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="big-font centered">📊 Data Quality Checker</div>', unsafe_allow_html=True)
-
-st.markdown("""
-<div style='text-align: center; font-size: 18px; padding-top: 10px; color: #555'>
-The simplest way to inspect your dataset's health using <span class='badge'>GenAI</span> + <span class='badge'>Streamlit</span>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("---")
-
-st.markdown("### ✨ How It Works")
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown("""
-    <div class='card'>
-        <h4>🧾 Upload CSV</h4>
-        <p>Drag & drop your `.csv` file or click to select.</p>
-    </div>
-    <div class='card'>
-        <h4>🔍 Scan Automatically</h4>
-        <p>We analyze for missing data, duplicates, and type mismatches.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown("""
-    <div class='card'>
-        <h4>🤖 LLM Summary</h4>
-        <p>A human-readable explanation of issues and cleanup suggestions.</p>
-    </div>
-    <div class='card'>
-        <h4>💡 Smarter Data</h4>
-        <p>Take confident steps toward clean, reliable data pipelines.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("---")
-
-st.markdown("### 💻 Powered By")
-st.markdown("""
-- 🤖 **Model**: `deepseek/deepseek-r1-0528:free` via OpenRouter
-- 🧠 **Framework**: Streamlit + FastAPI
-- 🔐 **Privacy**: All analysis happens in-memory (no storage)
-""")
-
-st.markdown("---")
 
 
 if st.button("🧠 Summarize with LLM"):
