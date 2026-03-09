@@ -2,14 +2,16 @@ import streamlit as st
 import pandas as pd
 import requests
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
-# API_KEY = st.secrets["api"]["OPEN_ROUTER_API_KEY"]
+# Must be the first Streamlit command
+st.set_page_config(page_title="Data Quality Checker", layout="wide")
+
+# sload_dotenv()
+
 API_KEY = st.text_input("🔑 Enter your OpenRouter API Key", type="password")
 
-st.set_page_config(page_title="Data Quality Checker", layout="wide")
-st.title("📊 Data Quality Checker using LLM 🚀")
+st.title("📊  Data Quality Checker using LLM 🚀")
 
 uploaded_file = st.file_uploader("📤 Upload your CSV file", type=["csv", "xlsx"])
 
@@ -22,10 +24,10 @@ if uploaded_file:
     st.dataframe(df.head(), use_container_width=True)
 
     # Generate quality stats
-    total_rows =len(df)
+    total_rows = len(df)
     total_columns = len(df.columns)
     duplicate_rows = df.duplicated().sum()
-    missing_report = df.isnull().mean() *100
+    missing_report = df.isnull().mean() * 100
     dtypes = df.dtypes.astype(str)
 
     # Show metrics
@@ -54,9 +56,10 @@ Data Types:
 {dtypes.to_string()}
 """
 
-
 if st.button("🧠 Summarize with LLM"):
-    if report.strip() == "":
+    if not API_KEY or API_KEY.strip() == "":
+        st.error("⚠️ Please enter your OpenRouter API Key above to use the LLM summarization feature.")
+    elif report.strip() == "":
         st.error("⚠️ Report is empty. Please upload a proper CSV file.")
     else:
         with st.spinner("Generating summary with LLM..."):
@@ -101,6 +104,5 @@ Write a human-readable summary highlighting key issues and suggesting fixes.
                 st.error("❌ Failed to fetch response from LLM")
                 st.code(f"Status Code: {response.status_code}")
                 st.code(f"Response: {response.text}")
-
 else:
     st.info("📁 Please upload a CSV file to begin.")
